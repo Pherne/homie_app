@@ -47,13 +47,19 @@ class NoteController extends ChangeNotifier {
     final db = DatabaseController();
     await db.deleteCategory(categoryId);
     categories
-        .remove(categories.where((element) => element.id == categoryId).first);
+        .remove(categories
+        .where((element) => element.id == categoryId)
+        .first);
     notifyListeners();
   }
 
   Future<void> updateCategory(Category category) async {
     final db = DatabaseController();
     db.updateCategory(category);
-    categories.elementAt(index)
+
+    var categoryIndex = categories.indexOf(categories
+        .where((e) => e.id == category.id)
+        .first);
+    categories.replaceRange(categoryIndex, categoryIndex, [category]);
   }
 }
