@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:homie_app/controller/note_controller.dart';
 import 'package:homie_app/model/note_category.dart';
+import 'package:homie_app/views/mark_up_text_field.dart';
 import 'package:markdown/markdown.dart' as markdown;
 import 'package:provider/provider.dart';
 
@@ -113,17 +114,7 @@ class _CreateNoteViewState extends State<CreateNoteView>
               ),
               Flexible(
                 child: editNote
-                    ? TextFormField(
-                        controller: _textEditingController,
-                        onChanged: (text) =>
-                            setState(() => _textEditingController.text = text),
-                        keyboardType: TextInputType.multiline,
-                        minLines: 1,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          label: Text('Notiz'),
-                        ),
-                      )
+                    ? MarkDownTextField(controller: _textEditingController)
                     : Html(
                         data: _textEditingController.text.isEmpty
                             ? 'Hier ist noch alles leer.'
