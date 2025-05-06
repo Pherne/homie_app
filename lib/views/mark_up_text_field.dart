@@ -56,13 +56,19 @@ class _MarkDownTextFieldState extends State<MarkDownTextField> {
                   child: Text('3'),
                 ),
               ],
-            )
+            ),
+            IconButton(
+              onPressed: () => _handleSelection(MarkDownType.link),
+              icon: Icon(Icons.link),
+            ),
+            IconButton(
+              onPressed: () => _handleSelection(MarkDownType.checkList),
+              icon: Icon(Icons.check_box),
+            ),
           ],
         ),
         TextFormField(
           controller: controller,
-          // onChanged: (text) =>
-          //     setState(() => _textEditingController.text = text),
           keyboardType: TextInputType.multiline,
           minLines: 1,
           maxLines: null,
@@ -100,9 +106,10 @@ class _MarkDownTextFieldState extends State<MarkDownTextField> {
       case MarkDownType.unorderedList:
         // TODO: Handle this case.
         throw UnimplementedError();
+      case MarkDownType.checkList:
+        return '- [ ] ${text ?? ''}';
       case MarkDownType.link:
-        // TODO: Handle this case.
-        throw UnimplementedError();
+        return '[${text ?? ''}]()';
       case MarkDownType.image:
         // TODO: Handle this case.
         throw UnimplementedError();

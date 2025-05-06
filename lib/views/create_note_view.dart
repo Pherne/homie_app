@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:homie_app/controller/note_controller.dart';
 import 'package:homie_app/model/note_category.dart';
 import 'package:homie_app/views/mark_up_text_field.dart';
-import 'package:markdown/markdown.dart' as markdown;
+import 'package:markdown_widget/markdown_widget.dart';
 import 'package:provider/provider.dart';
 
 class CreateNoteView extends StatefulWidget {
@@ -59,6 +58,7 @@ class _CreateNoteViewState extends State<CreateNoteView>
         padding: const EdgeInsets.all(16.0),
         child: Form(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               editNote
                   ? TextFormField(
@@ -115,11 +115,23 @@ class _CreateNoteViewState extends State<CreateNoteView>
               Flexible(
                 child: editNote
                     ? MarkDownTextField(controller: _textEditingController)
-                    : Html(
-                        data: _textEditingController.text.isEmpty
-                            ? 'Hier ist noch alles leer.'
-                            : markdown
-                                .markdownToHtml(_textEditingController.text)),
+                    : MarkdownWidget(
+                        data: _textEditingController.text,
+                        selectable: true,
+                        config: MarkdownConfig(configs: [
+                          CheckBoxConfig(builder: (isChecked) {
+                            return SizedBox(
+                              height: 24,
+                              width: 24,
+                              child: Checkbox(
+                                value: isChecked,
+                                onChanged: (value) => setState(
+                                    () => isChecked = value ?? true),
+                              ),
+                            );
+                          })
+                        ]),
+                      ),
               ),
             ],
           ),
@@ -136,7 +148,6 @@ class _CreateNoteViewState extends State<CreateNoteView>
         context: context,
         builder: (context) => SimpleDialog(
               title: Text('Neue Kategorie erstellen'),
-              // contentPadding: EdgeInsets.symmetric(horizontal: 16),
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -152,8 +163,6 @@ class _CreateNoteViewState extends State<CreateNoteView>
 
                       return null;
                     },
-                    // onChanged: (text) => setState(() {
-                    // }),
                     decoration: InputDecoration(label: Text('Name')),
                   ),
                 ),
@@ -163,20 +172,19 @@ class _CreateNoteViewState extends State<CreateNoteView>
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                          onPressed: dialogText.text.isNotEmpty?() {
-                           if(edit) {
-
-                           }
-                              noteController.addCategory(
-                                  Category(title: dialogText.text),
-                                  saveToDB: true);
-                              setState(() {
-                                _selectedCategory =
-                                    noteController.categories.last.id;
-                              });
-                              Navigator.pop(context);
-
-                          }:null,
+                          onPressed: dialogText.text.isNotEmpty
+                              ? () {
+                                  if (edit) {}
+                                  noteController.addCategory(
+                                      Category(title: dialogText.text),
+                                      saveToDB: true);
+                                  setState(() {
+                                    _selectedCategory =
+                                        noteController.categories.last.id;
+                                  });
+                                  Navigator.pop(context);
+                                }
+                              : null,
                           child: Text('Erstellen')),
                       TextButton(
                           onPressed: () => Navigator.pop(context),

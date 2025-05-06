@@ -1,10 +1,10 @@
 enum MarkDownType {
   bold,
   italic,
-  // boldItalic,
   blockquote,
   orderedList,
   unorderedList,
+  checkList,
   link,
   image,
   heading1,
