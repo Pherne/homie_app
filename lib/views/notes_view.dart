@@ -13,7 +13,6 @@ class NotesView extends StatefulWidget {
 }
 
 class _NotesViewState extends State<NotesView> {
-
   @override
   void initState() {
     Provider.of<NoteController>(context, listen: false).loadNotes();
@@ -26,19 +25,19 @@ class _NotesViewState extends State<NotesView> {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         items: [
-        BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Neue Notiz'),
-        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Suchen')
-      ],
-      onTap: (index) {
-        switch (index) {
-          case 0:
-            _createNote();
-          case 1:
-        //     TODO: Suche implement search
-var db=DatabaseController();
-db.deleteAllCategories();
-        }
-      },
+          BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Neue Notiz'),
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Suchen')
+        ],
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              _createNote();
+            case 1:
+              //     TODO: Suche implement search
+              var db = DatabaseController();
+              db.deleteAllCategories();
+          }
+        },
       ),
       body: noteController.notes.isEmpty
           ? Center(child: Text('Füge Notizen hinzu!'))
